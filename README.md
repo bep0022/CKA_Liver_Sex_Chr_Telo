@@ -1,7 +1,7 @@
 # Scripting for biologists project
 
 For the first chapter of my dissertation, I have obtained Nanopore sequencing data from old (5 years) male and female brown anole lizards. I selectively sequenced their sex chromosomes with the goal of quantifying the telomere lengths on the X and Y chromosomes.
-In this class, my goal is to adapt packages (TeloPeakCounter and TeloBP/TeloNP) produced by the Greider Lab [Karimian et al. 2024](https://doi.org/10.1126/science.ado0431) to quantify the telomere sequences in my own data. Specifically, TeloBP is available as command line one liners and I want to combine them into a more high-throughout python script.    
+In this class, my goal is to adapt packages (TeloPeakCounter and TeloBP/TeloNP) produced by the Greider Lab and published in [Karimian et al. 2024](https://doi.org/10.1126/science.ado0431) to quantify the telomere sequences in my own data. Specifically, TeloBP is available as command line one liners and I want to combine them into a more high-throughout python script that would be compatible with running on the HPC Easley.    
 
 ## Sex chromosome telomere sequencing analysis
 
@@ -11,7 +11,7 @@ Peak calling of raw electrical data to measure telomere length.
 
 Input:
 
--   The raw Nanopore sequencing data files (fast5 or pod5)
+-   The raw Nanopore sequencing data files (.fast5 or .pod5)
 
 Steps:
 
@@ -24,7 +24,7 @@ Determination of the subtelomere boundary to begin the calculation of the telome
 
 Input:
 
-- The basecalled sequence files (fastq)   
+- The basecalled sequence files (.fastq)   
 
 Steps:
 
