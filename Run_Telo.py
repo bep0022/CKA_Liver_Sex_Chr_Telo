@@ -11,57 +11,111 @@
 
 ### OPTION 1: Using .pod5 directly for .tsv output
 # try/except = catches runtime errors you can’t fully predict (bad file format, read failure, permission issues, etc.)
-# What to edit?
+# What to edit? input_file variable
 
-from pod5 import Reader
+#from pod5 import Reader
+#import numpy as np
 
-input_file = "/home/bep0022/2025_04_02_CKA_OLD_ChrSeq/CKA_Old/20250402_1036_MN39112_FBB00406_b8786f0b/pod5/FBB00406_b8786f0b_f9557bd8_25.pod5"
-output_file = "signal.tsv"
+#input_file = "/home/bep0022/2025_04_02_CKA_OLD_ChrSeq/CKA_Old/20250402_1036_MN39112_FBB00406_b8786f0b/pod5/FBB00406_b8786f0b_f9557bd8_0.pod5"
+#output_file = "signal.tsv"
 
-try:
-    with Reader(input_file) as reader, open(output_file, "w") as out:
-        
-        # Optional: header (some SquigglePull outputs include this, some don't)
-        out.write("read_id\tsignal_length\tsignal\n")
-        
-        for read in reader.reads():
-            read_id = str(read.read_id)
-            signal = read.signal
+#try:
+#    with Reader(input_file) as reader, open(output_file, "w") as out:
 
-            signal_length = len(signal)
-            signal_str = "\t".join(map(str, signal))
+        # Match SquigglePull column structure
+#        out.write("read_id\tmean\tstdv\tstart\tlength\tsignal\n")
 
-            out.write(f"{read_id}\t{signal_length}\t{signal_str}\n")
+#        for read in reader.reads():
+#            read_id = str(read.read_id)
 
-    print("SquigglePull-style TSV created successfully.")
-    print(f"Output: {output_file}")
+            # Raw signal (int16)
+#            raw_signal = np.array(read.signal, dtype=np.float32)
 
-except FileNotFoundError:
-    print("Input POD5 file not found.")
+            # Calibration parameters
+#            offset = read.calibration.offset
+#            scale = read.calibration.range / read.calibration.digitisation
 
-except Exception as e:
-    print("Failed to process POD5 file.")
-    print(f"Details: {e}")
+            # Convert to picoamps (this is the critical SquigglePull step)
+#            signal_pa = (raw_signal + offset) * scale
+
+            # Stats on scaled signal (NOT raw)
+#            mean = np.mean(signal_pa)
+#            stdv = np.std(signal_pa)
+#            start = 0
+#            length = len(signal_pa)
+
+#            signal_str = "\t".join(map(str, signal_pa))
+
+#            out.write(f"{read_id}\t{mean}\t{stdv}\t{start}\t{length}\t{signal_str}\n")
+
+#    print("SquigglePull-style TSV created successfully.")
+#    print(f"Output: {output_file}")
+
+#except FileNotFoundError:
+#    print("Input POD5 file not found.")
+
+#except Exception as e:
+#    print("Failed to process POD5 file.")
+#    print(f"Details: {e}")
 
 ### OPTION 2, IF CHOOSING SQUIGGLEPULL: .pod5 conversion to .fast5 for SquigglePull
 # bash code to convert to python: pod5 convert fast5 input.pod5 -o output_fast5/
+# hashtag out if not using
+
+import os
+import subprocess
+
+input_file = "/home/bep0022/2025_04_02_CKA_OLD_ChrSeq/CKA_Old/20250402_1036_MN39112_FBB00406_b8786f0b/pod5/FBB00406_b8786f0b_f9557bd8_0.pod5"
+output_dir = "output_fast5"
+
+print("DEBUG: about to run subprocess")
+
+os.makedirs(output_dir, exist_ok=True)
+
+try:
+    subprocess.run(
+        ["pod5", "convert", "to_fast5", input_file, "-o", output_dir],
+        check=True
+    )
+    print(f"Conversion successful. Output in: {output_dir}")
+
+except subprocess.CalledProcessError:
+    print("pod5 conversion failed.")
 
 ### SquigglePull for input into TeloPeakCounter 
 # bash code to convert to python: SquigglePull -i input.fast5/ -o signal.tsv 
 
-#import subprocess
+import subprocess
 
-#subprocess.run(
-#    ["SquigglePull","-i", "input.fast5","-o", "signal.tsv"]
-#    check=True,
-#    capture_output=True,
-#    text=True
-#)
-#print("SquigglePull ran successfully!")
-#print("Output saved to signal.tsv")
+squigglepull_path = "/home/bep0022/2025_04_02_CKA_OLD_ChrSeq/CKA_Liver_Sex_Chr_Telo/SquiggleKit/SquigglePull.py"
+input_file = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/output_fast5/*.fast5"
+output_file = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/signal.tsv"
+
+try:
+    subprocess.run(
+        ["python", squigglepull_path, "-i", input_file, "-o", output_file],
+        check=True,
+        capture_output=True,
+        text=True
+    )
+    print("SquigglePull ran successfully!")
+    print(f"Output saved to {output_file}")
+
 
 ### TeloPeakCounter
 
-#python3 TeloPeakCounter.py \
-#    --input signal.tsv \
-#    --output TeloPeak_results.txt
+#import subprocess
+
+#input_file = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/signal.tsv"
+#output_file = "TeloPeak_results.txt"
+#script_path = "/home/bep0022/2025_04_02_CKA_OLD_ChrSeq/CKA_Liver_Sex_Chr_Telo/TeloPeakCounter/TeloPeakCounter.py"
+
+# Run the external Python script
+#try:
+#    subprocess.run(
+#        ["python3", script_path, "--input", input_file, "--output", output_file],
+#        check=True
+#    )
+#    print(f"✅ Output file created successfully: {output_file}")
+#except subprocess.CalledProcessError:
+#    print("❌ TeloPeakCounter.py failed.")
