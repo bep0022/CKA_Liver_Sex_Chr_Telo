@@ -7,12 +7,13 @@
 ### 2. SquigglePull - extract raw signal data
 ### 3. TeloPeakCounter - measure telomeres
 
-### TeloBP
+### Step 1. TeloBP
 #   Submitted as job in sh script prior to running Run_Telo.py
 
+### Step 2. SquigglePull
 
-### OPTION 1: Using .pod5 directly for .tsv output
-#   try/except = catches runtime errors you can’t fully predict (bad file format, read failure, permission issues, etc.)
+##  OPTION 1 - SquigglePull Alternative: Using .pod5 directly for .tsv output
+#   Hashtag out if not choosing
 #   What to edit? input_file variable
 
 from pod5 import Reader
@@ -60,8 +61,8 @@ except Exception as e:
     print("Failed to process POD5 file.")
     print(f"Details: {e}")
 
-### OPTION 2, IF CHOOSING SQUIGGLEPULL: .pod5 conversion to .fast5 for SquigglePull
-# hashtag out if not using
+##  OPTION 2 - IF CHOOSING SQUIGGLEPULL: .pod5 conversion to .fast5 for SquigglePull
+#   Hashtag out if not choosing
 
 import os
 import subprocess
@@ -83,8 +84,8 @@ try:
 except subprocess.CalledProcessError:
     print("pod5 conversion failed.")
 
-### SquigglePull for input into TeloPeakCounter  
-
+#   SquigglePull for input into TeloPeakCounter  
+#   Alternative run option: python SquigglePull.py -rv -p input_dir -f all > signal.tsv
 import subprocess
 import os
 
@@ -93,32 +94,35 @@ input_dir = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/output_fast5/"
 output_dir = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/signal_output/"
 os.makedirs(output_dir, exist_ok=True)
 
-python SquigglePull.py -rv -p input_dir -f all > data.tsv
+import subprocess
 
 try:
-    result = subprocess.run(
-        ["python", squigglepull_path, "-p", input_dir, "-o", output_dir],
-        check=True,
-        capture_output=True,
-        text=True
-    )
-    
+    with open("signal.tsv", "w") as outfile:
+        result = subprocess.run(
+            ["python", squigglepull_path, "-rv", "-p", input_dir],
+            check=True,
+            stdout=outfile,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
     print("SquigglePull ran successfully!")
-    print(f"Output saved to {output_file}")
-    
-    print("STDOUT:\n", result.stdout)
-    print("STDERR:\n", result.stderr)
+    print("Output saved to signal.tsv")
+
+    if result.stderr:
+        print("STDERR:\n", result.stderr)
 
 except subprocess.CalledProcessError as e:
     print("SquigglePull failed.")
-    print(e)
+    print("Return code:", e.returncode)
+    print("Error output:\n", e.stderr)
 
-### TeloPeakCounter
+### Step 3. TeloPeakCounter
 
 import subprocess
 
-input_file = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/signal_output/data.tsv"
-output_file = "TeloPeak_results.txt"
+input_file = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/signal_output/signal.tsv"
+output_file = "/scratch/bep0022/CKA_Liver_Sex_Chr_Telo/signal_output/TeloPeak_results.txt"
 script_path = "/home/bep0022/2025_04_02_CKA_OLD_ChrSeq/CKA_Liver_Sex_Chr_Telo/TeloPeakCounter/TeloPeakCounter.py"
 
 try:
