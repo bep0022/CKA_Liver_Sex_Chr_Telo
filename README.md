@@ -19,11 +19,11 @@ git clone git@github.com:bep0022/CKA_Liver_Sex_Chr_Telo.git
 [Run_Telo.py](https://github.com/bep0022/CKA_Liver_Sex_Chr_Telo/blob/master/Run_Telo.py):
 -   A python script with modularized steps for SquigglePull and TeloPeakCounter
 
-[Run_Telosh.py](https://github.com/bep0022/CKA_Liver_Sex_Chr_Telo/blob/master/Run_Telopy.sh):
+[Run_Telopy.sh](https://github.com/bep0022/CKA_Liver_Sex_Chr_Telo/blob/master/Run_Telopy.sh):
 -   A shell script that allows the modules to be submitted as a job on a HPC
 -   One liners for TeloBP/TeloNP
 
-Change the files/filepaths for inputs and outputs to match your own in Run_Telo.py and Run_Telosh.py, then submit Run_Telosh.py as a job with in order to run all the module steps. 
+Change the files/filepaths for inputs and outputs to match your own in Run_Telo.py and Run_Telopy.sh, then submit Run_Telopy.sh as a job with in order to run all the module steps. 
 
 ### TeloBP/TeloNP
 
