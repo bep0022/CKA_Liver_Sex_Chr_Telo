@@ -23,7 +23,7 @@ git clone git@github.com:bep0022/CKA_Liver_Sex_Chr_Telo.git
 -   A shell script that allows the modules to be submitted as a job on a HPC
 -   One liners for TeloBP/TeloNP
 
-The files/filepaths for inputs and outputs that match your own in Run_Telo.py and Run_Telosh.py, then submit Run_Telosh.py as a job with in order to run all the module steps. 
+Change the files/filepaths for inputs and outputs to match your own in Run_Telo.py and Run_Telosh.py, then submit Run_Telosh.py as a job with in order to run all the module steps. 
 
 ### TeloBP/TeloNP
 
