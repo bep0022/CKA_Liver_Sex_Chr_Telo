@@ -11,8 +11,9 @@ In this class, my goal is to adapt packages (TeloPeakCounter and TeloBP/TeloNP) 
 
 ## Start by cloning the repository, which contains all other relevant repositories!
 
+```
 git clone git@github.com:bep0022/CKA_Liver_Sex_Chr_Telo.git
-
+```
 ## Scripts:
 
 [Run_Telo.py](https://github.com/bep0022/CKA_Liver_Sex_Chr_Telo/blob/master/Run_Telo.py):
@@ -25,9 +26,10 @@ git clone git@github.com:bep0022/CKA_Liver_Sex_Chr_Telo.git
 
 Determination of the subtelomere boundary to begin the calculation of the telomere length.
 
+```
 python3 teloBPBedGenome.py /path/to/input/genomic.fna /path/to/output/output.bed
 python3 teloBPCmd.py /path/to/input/fastq/ /path/to/output/ --fileMode --teloNP -v --save_graphs
-
+```
 
 Inputs:
 
