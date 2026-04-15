@@ -4,7 +4,7 @@ For the first chapter of my dissertation, I have obtained Nanopore sequencing da
 In this class, my goal is to adapt packages (TeloPeakCounter and TeloBP/TeloNP) produced by the Greider Lab and published in [Karimian et al. 2024](https://doi.org/10.1126/science.ado0431) to quantify the telomere sequences in my own data. Specifically, TeloBP is available as command line one liners and I want to combine them into a more high-throughout python script that would be compatible with running on the HPC Easley.    
 
 ## Sex chromosome telomere sequencing analysis
-## Steps:
+## Module Steps:
 1.   TeloBP - identify subtelomere boundary and extract telomere reads
 2.   SquigglePull - extract raw signal data
 3.   TeloPeakCounter - measure telomeres from signal data
@@ -22,6 +22,8 @@ git clone git@github.com:bep0022/CKA_Liver_Sex_Chr_Telo.git
 [Run_Telosh.py](https://github.com/bep0022/CKA_Liver_Sex_Chr_Telo/blob/master/Run_Telopy.sh):
 -   A shell script that allows the modules to be submitted as a job on a HPC
 -   One liners for TeloBP/TeloNP
+
+The files/filepaths for inputs and outputs that match your own in Run_Telo.py and Run_Telosh.py, then submit Run_Telosh.py as a job with in order to run all the module steps. 
 
 ### TeloBP/TeloNP
 
